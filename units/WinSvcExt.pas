@@ -7,11 +7,12 @@
 {                                                       }
 {     Translator: Andrej Sinicyn                        }
 {                                                       }
-{     v1.0 2013-12-03  Synced with Win2k-SDK            }
+{     v1.0  2013-12-03  Synced with Win2k-SDK           }
 {       Though EnumServicesStatusEx was available since }
 {       WinNT4.0, Win9x product line didn't have this   }
 {       function so this unit will compile only         }
 {       with Delphi 6 (Compiler v14) or newer.          }
+{     v1.0a 2013-12-03  Synced with WinXP-SDK           }
 {*******************************************************}
 
 {*******************************************************}
@@ -26,6 +27,9 @@ unit WinSvcExt;
 
 {$IF CompilerVersion >= 14.0}
   {$DEFINE WINDOWS50_MIN} // Win2k and greater.
+{$IFEND}
+{$IF CompilerVersion >= 15.0}
+  {$DEFINE WINDOWS51_MIN} // WinXP and greater.
 {$IFEND}
 
 interface
@@ -59,6 +63,10 @@ const
   SERVICE_CONTROL_HARDWAREPROFILECHANGE = $0000000C;
   {$EXTERNALSYM SERVICE_CONTROL_POWEREVENT}
   SERVICE_CONTROL_POWEREVENT            = $0000000D;
+{$IFDEF WINDOWS51_MIN}
+  {$EXTERNALSYM SERVICE_CONTROL_SESSIONCHANGE}
+  SERVICE_CONTROL_SESSIONCHANGE         = $0000000E;
+{$ENDIF}
 
 //
 // Controls Accepted  (Bit Mask)
@@ -71,6 +79,10 @@ const
   SERVICE_ACCEPT_HARDWAREPROFILECHANGE = $00000020;
   {$EXTERNALSYM SERVICE_ACCEPT_POWEREVENT}
   SERVICE_ACCEPT_POWEREVENT            = $00000040;
+{$IFDEF WINDOWS51_MIN}
+  {$EXTERNALSYM SERVICE_ACCEPT_SESSIONCHANGE}
+  SERVICE_ACCEPT_SESSIONCHANGE         = $00000080;
+{$ENDIF}
 
 //
 // Info levels for ChangeServiceConfig2 and QueryServiceConfig2
