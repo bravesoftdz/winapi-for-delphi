@@ -7,12 +7,13 @@
 {                                                       }
 {     Translator: Andrej Sinicyn                        }
 {                                                       }
-{     v1.0  2013-12-03  Synced with Win2k-SDK           }
+{     v1.0  2013-12-03  Synced with Win2k SDK           }
 {       Though EnumServicesStatusEx was available since }
 {       WinNT4.0, Win9x product line didn't have this   }
 {       function so this unit will compile only         }
 {       with Delphi 6 (Compiler v14) or newer.          }
-{     v1.0a 2013-12-03  Synced with WinXP-SDK           }
+{     v1.0a 2013-12-03  Synced with WinXP SDK           }
+{     v1.1  xxxx-xx-xx  Synced with WinVista SDK        }
 {*******************************************************}
 
 {*******************************************************}
