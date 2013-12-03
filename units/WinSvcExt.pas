@@ -27,12 +27,6 @@ unit WinSvcExt;
 {$IF CompilerVersion >= 14.0}
   {$DEFINE WINDOWS50_MIN} // Win2k and greater.
 {$IFEND}
-{$IF CompilerVersion >= 15.0}
-  {$DEFINE WINDOWS51_MIN} // WinXP and greater.
-{$IFEND}
-{$IF CompilerVersion >= 18.5}
-  {$DEFINE WINDOWS60_MIN} // WinVista and greater.
-{$IFEND}
 
 interface
 
@@ -65,10 +59,6 @@ const
   SERVICE_CONTROL_HARDWAREPROFILECHANGE = $0000000C;
   {$EXTERNALSYM SERVICE_CONTROL_POWEREVENT}
   SERVICE_CONTROL_POWEREVENT            = $0000000D;
-{$IFDEF WINDOWS51_MIN}
-  {$EXTERNALSYM SERVICE_CONTROL_SESSIONCHANGE}
-  SERVICE_CONTROL_SESSIONCHANGE         = $0000000E;
-{$ENDIF}
 
 //
 // Controls Accepted  (Bit Mask)
@@ -81,10 +71,6 @@ const
   SERVICE_ACCEPT_HARDWAREPROFILECHANGE = $00000020;
   {$EXTERNALSYM SERVICE_ACCEPT_POWEREVENT}
   SERVICE_ACCEPT_POWEREVENT            = $00000040;
-{$IFDEF WINDOWS51_MIN}
-  {$EXTERNALSYM SERVICE_ACCEPT_SESSIONCHANGE}
-  SERVICE_ACCEPT_SESSIONCHANGE         = $00000080;
-{$ENDIF}
 
 //
 // Info levels for ChangeServiceConfig2 and QueryServiceConfig2
@@ -224,17 +210,6 @@ function ChangeServiceConfig2A(hService: SC_HANDLE; dwInfoLevel: DWORD;
 {$EXTERNALSYM ChangeServiceConfig2W}
 function ChangeServiceConfig2W(hService: SC_HANDLE; dwInfoLevel: DWORD;
   lpInfo: Pointer): BOOL; stdcall;
-{$IFDEF WINDOWS60_MIN}
-{$EXTERNALSYM ControlServiceEx}
-function ControlServiceEx(hService: SC_HANDLE; dwControl, dwInfoLevel: DWORD;
-  var lpServiceStatus: TServiceStatus): BOOL; stdcall;
-{$EXTERNALSYM ControlServiceExA}
-function ControlServiceExA(hService: SC_HANDLE; dwControl, dwInfoLevel: DWORD;
-  var lpServiceStatus: TServiceStatus): BOOL; stdcall;
-{$EXTERNALSYM ControlServiceExW}
-function ControlServiceExW(hService: SC_HANDLE; dwControl, dwInfoLevel: DWORD;
-  var lpServiceStatus: TServiceStatus): BOOL; stdcall;
-{$ENDIF}
 {$EXTERNALSYM EnumServicesStatusEx}
 function EnumServicesStatusEx(hSCManager: SC_HANDLE; InfoLevel: SC_ENUM_TYPE;
   dwServiceType, dwServiceState: DWORD; var lpServices: TEnumServiceStatus;
@@ -281,11 +256,6 @@ const
 function ChangeServiceConfig2;          external advapi32 name 'ChangeServiceConfig2W';
 function ChangeServiceConfig2A;         external advapi32 name 'ChangeServiceConfig2A';
 function ChangeServiceConfig2W;         external advapi32 name 'ChangeServiceConfig2W';
-{$IFDEF WINDOWS60_MIN}
-function ControlServiceEx;              external advapi32 name 'ControlServiceExW';
-function ControlServiceExA;             external advapi32 name 'ControlServiceExA';
-function ControlServiceExW;             external advapi32 name 'ControlServiceExW';
-{$ENDIF}
 function EnumServicesStatusEx;          external advapi32 name 'EnumServicesStatusExW';
 function EnumServicesStatusExA;         external advapi32 name 'EnumServicesStatusExA';
 function EnumServicesStatusExW;         external advapi32 name 'EnumServicesStatusExW';
