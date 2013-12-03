@@ -7,12 +7,12 @@
 {                                                       }
 {     Translator: Andrej Sinicyn                        }
 {                                                       }
-{     v1.0  2013-12-03  Synced with Win2k SDK           }
+{     v1.0  2013-12-03  Synced with Win2k-SDK           }
 {       Though EnumServicesStatusEx was available since }
 {       WinNT4.0, Win9x product line didn't have this   }
 {       function so this unit will compile only         }
 {       with Delphi 6 (Compiler v14) or newer.          }
-{     v1.0a 2013-12-03  Synced with WinXP SDK           }
+{     v1.0a 2013-12-03  Synced with WinXP-SDK           }
 {     v1.1  xxxx-xx-xx  Synced with WinVista SDK        }
 {*******************************************************}
 
@@ -31,6 +31,9 @@ unit WinSvcExt;
 {$IFEND}
 {$IF CompilerVersion >= 15.0}
   {$DEFINE WINDOWS51_MIN} // WinXP and greater.
+{$IFEND}
+{$IF CompilerVersion >= 18.5}
+  {$DEFINE WINDOWS60_MIN} // WinVista and greater.
 {$IFEND}
 
 interface
@@ -223,6 +226,17 @@ function ChangeServiceConfig2A(hService: SC_HANDLE; dwInfoLevel: DWORD;
 {$EXTERNALSYM ChangeServiceConfig2W}
 function ChangeServiceConfig2W(hService: SC_HANDLE; dwInfoLevel: DWORD;
   lpInfo: Pointer): BOOL; stdcall;
+{$IFDEF WINDOWS60_MIN}
+{$EXTERNALSYM ControlServiceEx}
+function ControlServiceEx(hService: SC_HANDLE; dwControl, dwInfoLevel: DWORD;
+  var lpServiceStatus: TServiceStatus): BOOL; stdcall;
+{$EXTERNALSYM ControlServiceExA}
+function ControlServiceExA(hService: SC_HANDLE; dwControl, dwInfoLevel: DWORD;
+  var lpServiceStatus: TServiceStatus): BOOL; stdcall;
+{$EXTERNALSYM ControlServiceExW}
+function ControlServiceExW(hService: SC_HANDLE; dwControl, dwInfoLevel: DWORD;
+  var lpServiceStatus: TServiceStatus): BOOL; stdcall;
+{$ENDIF}
 {$EXTERNALSYM EnumServicesStatusEx}
 function EnumServicesStatusEx(hSCManager: SC_HANDLE; InfoLevel: SC_ENUM_TYPE;
   dwServiceType, dwServiceState: DWORD; var lpServices: TEnumServiceStatus;
@@ -269,6 +283,11 @@ const
 function ChangeServiceConfig2;          external advapi32 name 'ChangeServiceConfig2W';
 function ChangeServiceConfig2A;         external advapi32 name 'ChangeServiceConfig2A';
 function ChangeServiceConfig2W;         external advapi32 name 'ChangeServiceConfig2W';
+{$IFDEF WINDOWS60_MIN}
+function ControlServiceEx;              external advapi32 name 'ControlServiceExW';
+function ControlServiceExA;             external advapi32 name 'ControlServiceExA';
+function ControlServiceExW;             external advapi32 name 'ControlServiceExW';
+{$ENDIF}
 function EnumServicesStatusEx;          external advapi32 name 'EnumServicesStatusExW';
 function EnumServicesStatusExA;         external advapi32 name 'EnumServicesStatusExA';
 function EnumServicesStatusExW;         external advapi32 name 'EnumServicesStatusExW';
@@ -282,4 +301,3 @@ function RegisterServiceCtrlHandlerExW; external advapi32 name 'RegisterServiceC
 {$ENDIF}
 
 end.
-
